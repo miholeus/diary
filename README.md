@@ -10,9 +10,9 @@ Features:
 
 ## Installation
 
-pip install -r requirements/base.txt
-python manage.py migrate
-python manage.py runserver
+    $pip install -r requirements/base.txt
+    $python manage.py migrate
+    $python manage.py runserver
 
 ## Current status
 
