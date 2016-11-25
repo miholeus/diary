@@ -67,7 +67,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'diary.wsgi.application'
+WSGI_APPLICATION = 'config.wsgi.application'
 
 
 # Database
