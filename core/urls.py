@@ -13,5 +13,7 @@ urlpatterns = [
     url(r'^login/', views.LoginView.as_view(), name='login'),
     url(r'^logout/$', views.LogoutView.as_view(), name='logout'),
     url(r'^registration/$', views.RegistrationView.as_view(), name='registration'),
+    url(r'^users/$', views.UserListView.as_view(), name='users'),
+    url(r'^users/profile/(?P<id>\d+)/$', views.UserProfileView.as_view(), name='users.profile'),
 ]
 

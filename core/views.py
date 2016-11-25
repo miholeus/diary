@@ -8,11 +8,13 @@ from django.shortcuts import render
 from datetime import datetime
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 from django.core.urlresolvers import reverse
 from django.core.mail import send_mail
 from django.conf import settings
 from django.db.models import DateField, Q
 from django.http import HttpResponseRedirect, HttpResponse
+from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
 from django.views.generic import View, TemplateView
 from django.views.decorators.csrf import csrf_exempt
@@ -118,7 +120,7 @@ class HomeView(BaseTemplateView):
         return super(HomeView, self).dispatch(*args, **kwargs)
 
     def get(self, request, *args, **kwargs):
-        return render(request, "index.html")
+        return render(request, "core/home.html")
 
 
 class LoginView(BaseTemplateView):
@@ -271,3 +273,60 @@ class RegistrationView(BaseView):
             return self.json_response(
                 {'status': 'error', 'message': 'Произошла системная ошибка. Мы уже работаем над ней'}
             )
+
+
+class UserListView(BaseTemplateView):
+    """
+    Список пользователей в системе
+    """
+    template_name = 'core/users/index.html'
+
+    def get(self, request, *args, **kwargs):
+
+        get = request.GET
+        or_cond = Q()
+
+        search = get.get('search', None)
+        if search:
+            for field in ('username', 'email', 'id'):
+                or_cond |= Q(
+                    **{"%s__icontains" % field: search}
+                )
+        users = User.objects.filter(or_cond)
+        count = 20
+
+        paginator = Paginator(users, count)
+        page_count = paginator.num_pages
+
+        page = int(get.get('page', 0))
+        if page not in range(page_count):
+            page = 0
+
+        users = paginator.page(page + 1)
+
+        return self.render_to_response(
+            {
+                'users': users,
+                'range': list(range(page_count)),
+                'page': page,
+                'max': page_count-1,
+                'search': search or ''
+            }
+        )
+
+
+class UserProfileView(BaseTemplateView):
+    """
+    Страница профиля пользователя
+    """
+    template_name = 'core/users/profile.html'
+
+    def get(self, request, *args, **kwargs):
+        user = get_object_or_404(User, pk=kwargs.get('id'))
+
+        return self.render_to_response({
+            'user': user
+        })
+
+    def post(self, request, *args, **kwargs):
+        pass

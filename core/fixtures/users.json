@@ -1,0 +1,24 @@
+[
+  {
+    "model": "core.user",
+    "pk": 1,
+    "fields": {
+      "first_name": "Demo",
+      "last_name": "demo",
+      "middle_name": "",
+      "username": "demo",
+      "password": "pbkdf2_sha256$20000$CKvoM3cRGr0a$suHaQjC4JTotZcXUgm0mEt0EkNXlSH83WC/TkQIPfMs=",
+      "email": "demo@example.com",
+      "is_staff": true,
+      "is_active": true,
+      "phone": "77777777777",
+      "skype": "",
+      "site": "",
+      "city": "Los Angeles",
+      "birth_date": "2016-11-25",
+      "verify_email_uuid": "",
+      "avatar_small": null,
+      "avatar": null
+    }
+  }
+]
