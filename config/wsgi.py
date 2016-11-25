@@ -1,5 +1,5 @@
 """
-WSGI config for biplatform project.
+WSGI config for diary project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 

@@ -14,6 +14,13 @@ Features:
     $python manage.py migrate
     $python manage.py runserver
 
+Add your settings in `config/settings/local.py`
+
+Set `DEBUG=False`, add `ALLOWED_HOSTS`
+Then run:
+
+    $python manage.py collectstatic --noinput
+
 ## Current status
 
 In development
