@@ -1,0 +1,22 @@
+
+<h3 class="control-sidebar-heading">Таблица Загрузок</h3>
+<ul class="control-sidebar-menu" id="user_tasks_bar">
+</ul>
+
+<script type="text/html" id="tasks_progress">
+    <% _.each(data, function(taskId) { %>
+        <li id="task-li-<%= taskId %>">
+            <a href="javascript::;">
+                <h4 class="control-sidebar-subheading">
+                    Загрузка
+                    <span class="label label-danger pull-right" id="task-text-<%= taskId %>">0%</span>
+                </h4>
+
+                <div class="progress progress-xxs">
+                    <div class="progress-bar progress-bar-danger" id="task-measure-<%= taskId %>"
+                         style="width: 0%"></div>
+                </div>
+            </a>
+        </li>
+    <% }); %>
+</script>

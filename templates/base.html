@@ -1,0 +1,73 @@
+{% extends "welcome.html" %}
+
+{% load staticfiles i18n %}
+
+{% block body-html %}
+
+  <body class="hold-transition skin-blue sidebar-mini">
+    <div class="wrapper">
+
+      <!-- Main Header -->
+      <header class="main-header">
+
+        <!-- Logo -->
+        <a href="/" class="logo">
+          <!-- mini logo for sidebar mini 50x50 pixels -->
+          <span class="logo-mini"><b>D</b>i</span>
+          <!-- logo for regular state and mobile devices -->
+          <span class="logo-lg"><b>DI</b>ary</span>
+        </a>
+
+        <!-- Header Navbar -->
+        {% include "layout/navigation.html" %}
+      </header>
+      <!-- Left side column. contains the logo and sidebar -->
+      <aside class="main-sidebar">
+        {% include "layout/sidebar-left.html" %}
+      </aside>
+
+      <!-- Content Wrapper. Contains page content -->
+      <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+          {% block content-header %}
+
+          {% endblock %}
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+
+          <!-- Your Page Content Here -->
+            {% block content %}
+
+            {% endblock %}
+        </section><!-- /.content -->
+          {% block modal %}{% endblock modal %}
+      </div><!-- /.content-wrapper -->
+
+      <!-- Main Footer -->
+      <footer class="main-footer">
+        <!-- To the right -->
+        <div class="pull-right hidden-xs">
+          Ваш дневник
+        </div>
+        <!-- Default to the left -->
+        <strong>Copyright &copy; 2015 <a href="#" target="_blank">Ваш дневник</a>.</strong> Все права защищены.
+      </footer>
+
+      <!-- Control Sidebar -->
+        {% include "layout/sidebar.html" %}
+        <!-- /.control-sidebar -->
+      <!-- Add the sidebar's background. This div must be placed
+           immediately after the control sidebar -->
+      <div class="control-sidebar-bg"></div>
+    </div><!-- ./wrapper -->
+
+    <!-- Optionally, you can add Slimscroll and FastClick plugins.
+         Both of these plugins are recommended to enhance the
+         user experience. Slimscroll is required when using the
+         fixed layout. -->
+  </body>
+
+{% endblock %}
