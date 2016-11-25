@@ -7,7 +7,7 @@ $(document).ready(function() {
       console.log('Channels: ', data.channels);
       _.each(data.channels, function(channel) {
         var q;
-        q = new Queue2(tasksUl.data('host'), tasksUl.data('port'), '/ws');
+        q = new Queue(tasksUl.data('host'), tasksUl.data('port'), '/ws');
         q.subscribe(channel);
       });
     });
