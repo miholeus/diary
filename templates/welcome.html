@@ -15,7 +15,7 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{% static 'system/font-awesome-4.4.0/css/font-awesome.min.css' %}">
     <!-- Ionicons -->
-    <link rel="stylesheet" href="{% static "css/ionicons.min.css" %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="{% static "system/dist/css/AdminLTE.min.css" %}">
 
@@ -66,14 +66,16 @@
     <!-- AdminLTE App -->
     <script src="{% static "system/dist/js/app.min.js" %}"></script>
     <!--jQuery Confirm messages-->
-     <script src="{% static "system/plugins/confirm/jquery.confirm.min.js" %}"></script>
+    <script src="{% static "system/plugins/confirm/jquery.confirm.min.js" %}"></script>
+    <!--ChartJS-->
+    <script src="{% static 'system/plugins/chartjs/Chart.min.js' %}"></script>
 
     <!-- place project specific Javascript in this file -->
-      <script src="{% static 'js/core.js' %}"></script>
-      <script src="{% static 'js/tasks_progress.js' %}"></script>
-      <script src="{% static 'js/messages/autobahn-0.9.8.min.js' %}"></script>
-      <!--<script src="{% static 'js/messages/queue.js' %}"></script>-->
-      <script src="{% static 'js/messages/queue2.js' %}"></script>
-      {% block javascript %}{% endblock javascript %}
+    <script src="{% static 'js/core.js' %}"></script>
+    <script src="{% static 'js/tasks_progress.js' %}"></script>
+    <script src="{% static 'js/messages/autobahn-0.9.8.min.js' %}"></script>
+    <script src="{% static 'js/messages/queue.js' %}"></script>
+
+    {% block javascript %}{% endblock javascript %}
 
 </html>

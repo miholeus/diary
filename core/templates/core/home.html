@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% load staticfiles %}
+
 {% block content-header %}
     <h1>
         Главная
@@ -13,6 +15,29 @@
 
 {% block content %}
 
-This is my default page
+    {% include 'core/panel/info_boxes.html' %}
+
+    {% include 'core/charts/monthly_recap_report.html' %}
+
+    <!-- Main row -->
+    <div class="row">
+        <!-- Left col -->
+        <div class="col-md-8">
+            <div class="row">
+                {% include 'core/chat/direct.html' %}
+
+                {% include 'core/users/latest_members.html' %}
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.col -->
+
+    </div>
+    <!-- /.row -->
 
 {% endblock content %}
+
+{% block javascript %}
+<!-- page script -->
+<script src="{% static 'js/charts.js' %}"></script>
+{% endblock javascript %}
