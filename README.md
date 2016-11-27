@@ -30,7 +30,7 @@ Or you can simply run:
 Run command
 
     $ make run
-ma
+
 ## Current status
 
 In development
