@@ -10,17 +10,27 @@ Features:
 
 ## Installation
 
-    $pip install -r requirements/base.txt
-    $python manage.py migrate
-    $python manage.py runserver
+    $ pip install -r requirements/base.txt
+    $ python manage.py migrate
+    $ python manage.py runserver
 
 Add your settings in `config/settings/local.py`
 
 Set `DEBUG=False`, add `ALLOWED_HOSTS`
 Then run:
 
-    $python manage.py collectstatic --noinput
+    $ python manage.py collectstatic --noinput
 
+Or you can simply run:
+
+    $ make setup
+
+## Run project
+
+Run command
+
+    $ make run
+ma
 ## Current status
 
 In development
