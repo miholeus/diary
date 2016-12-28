@@ -318,6 +318,7 @@ class UserListView(BaseTemplateView):
             }
         )
 
+
 class NewUserView(BaseTemplateView):
     """
     Создание нового пользователя

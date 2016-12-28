@@ -66,7 +66,7 @@ $(document).ready ->
   activePage = $('#active_num').val()
   usersUrl = $('#users_table').attr('data-url')
   $('[name="birth_date"]').datepicker
-    format: 'dd.mm.yyyy'
+    format: 'yyyy-mm-dd'
     autoclose: true
     forseParse: false
     keyboardNavigation: false

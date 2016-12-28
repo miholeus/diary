@@ -2,6 +2,7 @@
 
 from django import forms
 from django.core.exceptions import ValidationError
+from django.conf import settings
 
 from .models import User
 
@@ -11,7 +12,7 @@ class UserForm(forms.ModelForm):
         User form
     """
     email = forms.EmailField(required=True)
-    birth_date = forms.DateField(required=True)
+    birth_date = forms.DateField(required=True,input_formats=settings.DATE_INPUT_FORMATS)
     username = forms.CharField(label='Логин', required=True)
 
     def __init__(self, *args, **kwargs):
