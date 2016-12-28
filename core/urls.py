@@ -18,5 +18,6 @@ urlpatterns = [
     url(r'^users/edit/(?P<id>\d+)/$', views.EditUserView.as_view(), name='users.edit'),
     url(r'^users/delete/(?P<id>\d+)/$', views.RemoveUserView.as_view(), name='users.delete'),
     url(r'^users/profile/(?P<id>\d+)/$', views.UserProfileView.as_view(), name='users.profile'),
+    url(r'^trainings/$', views.TrainingsListView.as_view(), name='trainings'),
 ]
 

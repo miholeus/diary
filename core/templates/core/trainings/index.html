@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% load staticfiles i18n %}
+
+{% block content-header %}
+    <h1>
+        Список тренировок
+    </h1>
+{% endblock %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="button" class="btn btn-info"><a href="#"><i class="fa fa-align-left"></i></a></button>
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">Тренировки</h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body table-responsive no-padding">
+                    <table id="users_table" class="table table-hover" data-url="{% url "core:trainings" %}">
+                        <tbody>
+                        <tr>
+                            <th>ID</th>
+                            <th>Коментарий</th>
+                            <th>Дата</th>
+                        </tr>
+                        {% for row in trainings %}
+                            <tr>
+                                <td>{{ row.number }}</td>
+                                <td>{{ row.note }}
+                                <td>{{ row.date }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                {% if max != 0%}
+                    <div class="box-body">
+                        <div class="text-center">
+                            <ul class="pagination">
+                                <li id="active_num" hidden="hidden" value="{{page}}"></li>
+                                <li><a class="fa fa-chevron-left" href="javascript:;" onclick="prev()"></a></li>
+                                {% for i in range%}
+                                    <li id="pagi_{{i}}" data-pagi="true"
+                                            {% if i == page %}
+                                        class="active"
+                                            {% endif %}
+                                            {% if i == max %}
+                                        data-max="true"
+                                            {% endif %}
+                                    ><a href="javascript:;" onclick="pagi({{i}})">{{i|add:"1"}}</a></li>
+                                {% endfor %}
+                                <li><a class="fa fa-chevron-right" href="javascript:;" onclick="next()"></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+    </div>
+
+
+{% endblock content %}
+
+{% block javascript %}<script src="{% static 'js/users.js' %}"></script>{% endblock javascript %}

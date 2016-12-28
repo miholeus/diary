@@ -449,3 +449,33 @@ class UserProfileView(BaseTemplateView):
 
     def post(self, request, *args, **kwargs):
         pass
+
+
+class TrainingsListView(BaseTemplateView):
+    """
+    Список тренировок
+    """
+    template_name = 'core/trainings/index.html'
+
+    def get(self, request, *args, **kwargs):
+
+        get = request.GET
+        count = 20
+
+        trainings = []
+
+        paginator = Paginator(trainings, count)
+        page_count = paginator.num_pages
+
+        page = int(get.get('page', 0))
+        if page not in range(page_count):
+            page = 0
+
+        return self.render_to_response(
+            {
+                'trainings': trainings,
+                'range': list(range(page_count)),
+                'page': page,
+                'max': page_count-1
+            }
+        )
