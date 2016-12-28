@@ -2,6 +2,7 @@
 
 import json
 import logging
+import io
 import uuid
 
 from django.shortcuts import render
@@ -11,6 +12,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.core.urlresolvers import reverse
 from django.core.mail import send_mail
+from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.conf import settings
 from django.db.models import DateField, Q
 from django.http import HttpResponseRedirect, HttpResponse
@@ -19,10 +21,13 @@ from django.utils.decorators import method_decorator
 from django.views.generic import View, TemplateView
 from django.views.decorators.csrf import csrf_exempt
 
+from PIL import Image
+
 from smtplib import SMTPServerDisconnected
 
 from .helpers import CustomJsonEncoder, Settings
 from .models import User
+from . import forms as core_forms
 
 logger = logging.getLogger(__name__)
 
@@ -146,7 +151,6 @@ class LoginView(BaseTemplateView):
 
         username = post['username']
         password = post['password']
-        user = None
 
         if "next" in request.POST:
             next_url = request.POST['next']
@@ -155,14 +159,14 @@ class LoginView(BaseTemplateView):
 
         # if email (костылим):
         if '@' in username:
-            users = User.objects.filter(email=username)
-            for us in users:
-                if check_password(password, us.password):
-                    user = authenticate(
-                        username=us.username,
-                        password=password
-                    )
-                    break
+            user = User.objects.get(email=username)
+
+            if user and user.check_password(password):
+                user = authenticate(
+                    username=user.username,
+                    password=password
+                )
+
         else:
             user = authenticate(
                 username=username,
@@ -313,6 +317,120 @@ class UserListView(BaseTemplateView):
                 'search': search or ''
             }
         )
+
+class NewUserView(BaseTemplateView):
+    """
+    Создание нового пользователя
+    """
+    template_name = 'core/users/add.html'
+
+    def get(self, request, *args, **kwargs):
+        form = core_forms.NewUserForm()
+        return render(request, self.template_name, {
+            'form': form,
+            'first_tab': ['avatar', 'username', 'email', ],
+        })
+
+    def post(self, request, *args, **kwargs):
+        post = request.POST
+        form = core_forms.NewUserForm(post)
+
+        if not form.is_valid():
+            return self.render_to_response({
+                'form': form,
+                'first_tab': ['avatar', 'username', 'email', ],
+            })
+
+        user = form.save(commit=False)
+        user.is_active = False
+        user.is_staff = True
+        user.set_password(post.get('password'))
+        user.save()
+
+        return self.redirect('core:users')
+
+
+class EditUserView(BaseTemplateView):
+    """
+    Редактирование пользователя
+    """
+    template_name = 'core/users/edit.html'
+
+    def get(self, request, *args, **kwargs):
+
+        user = get_object_or_404(User, pk=kwargs.get('id'))
+
+        form = core_forms.UserForm(instance=user)
+        return self.render_to_response({
+            'form': form,
+            'first_tab': ['avatar', 'username', 'email', ],
+            'full_path': request.get_full_path(),
+        })
+
+    def post(self, request, *args, **kwargs):
+
+        post = request.POST
+        user = get_object_or_404(User, pk=kwargs.get('id'))
+        form = core_forms.UserForm(post, instance=user)
+
+        if not form.is_valid():
+            return self.render_to_response({
+                'form': form,
+                'first_tab': ['avatar', 'username', 'email', ],
+                'full_path': request.get_full_path(),
+            })
+
+        profile = form.save(commit=False)
+
+        image = request.FILES.get('file', None)
+
+        # добавили аву
+        if image:
+            filename = image.name
+            sm_filename = 'small_'+filename
+
+            avatar_img = Image.open(image)
+            avatar_img.thumbnail(settings.AVATAR_SIZES, Image.ANTIALIAS)
+            big_img_io = io.StringIO()
+            avatar_img.save(big_img_io, format='JPEG')
+            avatar = InMemoryUploadedFile(big_img_io, None, filename,
+                                          'image/jpeg', big_img_io.len, None)
+            user.avatar.delete()
+            user.avatar.save(filename, avatar)
+
+            small_avatar_img = Image.open(image)
+            small_avatar_img.thumbnail(settings.SMALL_AVATAR_SIZES, Image.ANTIALIAS)
+            small_img_io = io.StringIO()
+            small_avatar_img.save(small_img_io, format='JPEG')
+            small_avatar = InMemoryUploadedFile(
+                small_img_io, None, sm_filename,
+                'image/jpeg', small_img_io.len, None)
+            user.avatar_small.delete()
+            user.avatar_small.save(sm_filename, small_avatar)
+
+        # ничего не меняли
+        elif not post.get('fileupload_avatar'):
+            user.avatar.delete()
+            user.avatar_small.delete()
+
+        profile.save()
+
+        next_url = post.get('full_path', None)
+        if next_url and '?next=' in next_url:
+            return HttpResponseRedirect(next_url.split('?next=')[1])
+        else:
+            return self.redirect('core:users')
+
+
+class RemoveUserView(BaseView):
+    """
+    Удаление пользователя
+    """
+    def post(self, request, *args, **kwargs):
+        user = get_object_or_404(User, pk=kwargs.get('id'))
+        user.delete()
+
+        return self.json_response({'redirect_url': reverse('core:users')})
 
 
 class UserProfileView(BaseTemplateView):
