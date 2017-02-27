@@ -19,5 +19,6 @@ urlpatterns = [
     url(r'^users/delete/(?P<id>\d+)/$', views.RemoveUserView.as_view(), name='users.delete'),
     url(r'^users/profile/(?P<id>\d+)/$', views.UserProfileView.as_view(), name='users.profile'),
     url(r'^trainings/$', views.TrainingsListView.as_view(), name='trainings'),
+    url(r'^trainings/add$', views.TrainingsNewView.as_view(), name='trainings.add'),
 ]
 

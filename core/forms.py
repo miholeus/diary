@@ -56,3 +56,16 @@ class NewUserForm(UserForm):
 
         if password != confirm:
             raise ValidationError('Пароли не совпадают')
+
+
+class NewTrainingForm(forms.ModelForm):
+    """
+    Training form
+    """
+    name = forms.CharField(required=True, label='Название')
+
+    class Meta:
+        model = User
+        fields = (
+            'username',
+        )

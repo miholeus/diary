@@ -479,3 +479,30 @@ class TrainingsListView(BaseTemplateView):
                 'max': page_count-1
             }
         )
+
+
+class TrainingsNewView(BaseTemplateView):
+    """
+    Создание нового пользователя
+    """
+    template_name = 'core/trainings/add.html'
+
+    def get(self, request, *args, **kwargs):
+        form = core_forms.NewTrainingForm()
+        return render(request, self.template_name, {
+            'form': form
+        })
+
+    def post(self, request, *args, **kwargs):
+        post = request.POST
+        form = core_forms.NewTrainingForm(post)
+
+        if not form.is_valid():
+            return self.render_to_response({
+                'form': form
+            })
+
+        training = form.save(commit=False)
+        training.save()
+
+        return self.redirect('core:trainings')
