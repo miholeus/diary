@@ -28,6 +28,7 @@ from smtplib import SMTPServerDisconnected
 from .helpers import CustomJsonEncoder, Settings
 from .models import User
 from . import forms as core_forms
+from core.services import trainings
 
 logger = logging.getLogger(__name__)
 
@@ -120,12 +121,16 @@ class BaseTemplateView(TemplateView, BaseView):
 
 class HomeView(BaseTemplateView):
     """Главная страница dashboard"""
+    template_name = "core/home.html"
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super(HomeView, self).dispatch(*args, **kwargs)
 
     def get(self, request, *args, **kwargs):
-        return render(request, "core/home.html")
+        training = trainings.Training()
+        dates = training.get_dates(request.user.id)
+        js_template = '<ul class="<%=name.toLowerCase()%>-legend"><% for (var i=0; i<datasets.length; i++){%><li><span style="background-color:<%=datasets[i].lineColor%>"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>'
+        return self.render_to_response({'dates': dates, 'js_template': js_template})
 
 
 class LoginView(BaseTemplateView):

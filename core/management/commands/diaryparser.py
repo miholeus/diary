@@ -3,6 +3,7 @@
 import csv
 import os
 
+from datetime import datetime
 from django.core.management.base import BaseCommand, CommandError
 from config.settings.production import MONGO_HOST, MONGO_PORT
 from pymongo import MongoClient
@@ -34,7 +35,9 @@ class Command(BaseCommand):
 
                 if len(row[0]) > 0:  # new row
                     train_number += 1
-                    data.append({'number': train_number, 'date': row[1], 'note': row[2].strip(), 'data': []})
+                    print(row[1])
+                    date_time = datetime.strptime(row[1].strip(), '%d.%m.%Y')
+                    data.append({'number': train_number, 'date': date_time, 'note': row[2].strip(), 'data': []})
                 else:
                     index = train_number-1
                     current_data = {'id': row[2], 'title': row[3].strip(), 'sets': []}
