@@ -129,8 +129,11 @@ class HomeView(BaseTemplateView):
     def get(self, request, *args, **kwargs):
         training = trainings.Training()
         dates = training.get_dates(request.user.id)
+        months = []
+        if len(dates) > 0:
+            months = training.get_months_sequences(dates.get('min'), dates.get('max'))
         js_template = '<ul class="<%=name.toLowerCase()%>-legend"><% for (var i=0; i<datasets.length; i++){%><li><span style="background-color:<%=datasets[i].lineColor%>"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>'
-        return self.render_to_response({'dates': dates, 'js_template': js_template})
+        return self.render_to_response({'dates': dates, 'js_template': js_template, 'months': months})
 
 
 class LoginView(BaseTemplateView):

@@ -54,7 +54,7 @@
             var areaChart = new Chart(areaChartCanvas);
 
             var areaChartData = {
-                labels: ["January", "February", "March", "April", "May", "June", "July"],
+                labels: [{% for month in months %}"{{ month }}"{% if not forloop.last %},{% endif %}{% endfor %}],
                 datasets: [
                     {
                         label: "Digital Goods",
