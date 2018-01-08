@@ -1,4 +1,4 @@
-django==1.8.3
+django==2.0.1
 psycopg2
 pymongo
 redis
