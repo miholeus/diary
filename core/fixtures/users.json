@@ -7,7 +7,7 @@
       "last_name": "demo",
       "middle_name": "",
       "username": "demo",
-      "password": "pbkdf2_sha256$20000$CKvoM3cRGr0a$suHaQjC4JTotZcXUgm0mEt0EkNXlSH83WC/TkQIPfMs=",
+      "password": "pbkdf2_sha256$100000$ylXKiBbHSdaa$eoGPTgcPzC0SzFbJhAZZ1vl+ti7H/Jj29UFT36omOgU=",
       "email": "demo@example.com",
       "is_staff": true,
       "is_active": true,
