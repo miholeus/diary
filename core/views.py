@@ -146,7 +146,7 @@ class LoginView(BaseTemplateView):
         return super(BaseView, self).dispatch(*args, **kwargs)
 
     def get(self, request, *args, **kwargs):
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             return self.redirect_to_url("/")
         if "next" in request.GET:
             next_url = request.GET['next']
